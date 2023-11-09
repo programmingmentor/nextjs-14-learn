@@ -9,8 +9,10 @@ const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {
   try {
+    console.log('Before create extension');
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Create the "users" table if it doesn't exist
+    console.log('Before create table users');
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -163,7 +165,9 @@ async function seedRevenue(client) {
 async function main() {
   const client = await db.connect();
 
+  console.log('Before seedUsers');
   await seedUsers(client);
+  console.log('After seedUsers');
   await seedCustomers(client);
   await seedInvoices(client);
   await seedRevenue(client);
